@@ -1,0 +1,4 @@
+<!--index.wxml-->
+<view class="v-home">
+  <view>首页</view>
+</view>

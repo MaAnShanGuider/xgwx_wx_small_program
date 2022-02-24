@@ -1,0 +1,15 @@
+{
+    "pages": [
+        "pages/index/index",
+        "pages/mine/index"
+    ],
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#D8322E",
+        "navigationBarTitleText": "峡谷我秀",
+        "navigationBarTextStyle": "white"
+    },
+    "style": "v2",
+    "sitemapLocation": "sitemap.json",
+    "lazyCodeLoading": "requiredComponents"
+}
