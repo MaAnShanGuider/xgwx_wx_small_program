@@ -1,15 +1,39 @@
 {
-    "pages": [
-        "pages/index/index",
-        "pages/mine/index"
-    ],
-    "window": {
-        "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#D8322E",
-        "navigationBarTitleText": "峡谷我秀",
-        "navigationBarTextStyle": "white"
-    },
-    "style": "v2",
-    "sitemapLocation": "sitemap.json",
-    "lazyCodeLoading": "requiredComponents"
+	"pages": [
+		"pages/index/index",
+		"pages/mine/index",
+		"pages/publish/index"
+	],
+	"window": {
+		"backgroundTextStyle": "light",
+		"navigationBarBackgroundColor": "#1296db",
+		"navigationBarTitleText": "峡谷我秀",
+		"navigationBarTextStyle": "white"
+	},
+	"style": "v2",
+	"sitemapLocation": "sitemap.json",
+	"tabBar": {
+		"color": "#dbdbdb",
+		"selectedColor": "#1296db",
+		"borderStyle": "black" ,
+		"list": [
+			{
+				"selectedIconPath": "assets/img/icon_01_default.png",
+				"iconPath": "assets/img/icon_01.png",
+				"pagePath": "pages/index/index",
+				"text": "首页"
+			}, 
+			{
+				"selectedIconPath": "assets/img/icon_02_default.png",
+				"iconPath": "assets/img/icon_02.png",
+				"pagePath": "pages/publish/index",
+				"text": "发布"
+			},{
+				"selectedIconPath": "assets/img/icon_03_default.png",
+				"iconPath": "assets/img/icon_03.png",
+				"pagePath": "pages/mine/index",
+				"text": "个人中心"
+			}
+		]
+	}
 }

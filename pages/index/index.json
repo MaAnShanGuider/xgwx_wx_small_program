@@ -1,4 +1,5 @@
 {
   "usingComponents": {},
-  "disableScroll": true
+  "disableScroll": true,
+  "navigationBarTitleText": "峡谷我秀"
 }

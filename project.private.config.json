@@ -23,6 +23,12 @@
                     "pathName": "pages/mine/index",
                     "query": "",
                     "scene": null
+                },
+                {
+                    "name": "发布",
+                    "pathName": "pages/mine/index",
+                    "query": "",
+                    "scene": null
                 }
             ]
         }

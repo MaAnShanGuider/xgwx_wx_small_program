@@ -1,4 +1,17 @@
 <!--index.wxml-->
-<view class="v-home">
-  <view>首页</view>
+<view class="v-home-main">
+<!-- <text class="iconfont icon-addition"></text> -->
+	<view class="__top">
+		<view class="__top-wrapper">
+			<view class="__side-wrapper">
+				<view  class="__side-border" />
+				<text  class="__side-title">当月女神榜</text>
+			</view>
+			
+		</view>
+		  
+	
+		  
+	</view>
+
 </view>
