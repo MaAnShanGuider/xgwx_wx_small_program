@@ -27,9 +27,9 @@
         "uploadWithSourceMap": true,
         "compileHotReLoad": true,
         "lazyloadPlaceholderEnable": false,
-        "useMultiFrameRuntime": false,
-        "useApiHook": false,
-        "useApiHostProcess": false,
+        "useMultiFrameRuntime": true,
+        "useApiHook": true,
+        "useApiHostProcess": true,
         "babelSetting": {
             "ignore": [],
             "disablePlugins": [],
@@ -38,7 +38,6 @@
         "useIsolateContext": false,
         "userConfirmedBundleSwitch": false,
         "packNpmManually": false,
-        "packNpmRelationList": [],
         "minifyWXSS": true,
         "disableUseStrict": false,
         "minifyWXML": true,
@@ -49,7 +48,8 @@
     "compileType": "miniprogram",
     "libVersion": "2.21.3",
     "appid": "wxc69d748418aecb6e",
-    "projectname": "%E5%B3%A1%E8%B0%B7%E6%88%91%E7%A7%80",
+    "projectname": "xgtx",
+    "miniprogramRoot": "/dist",
     "debugOptions": {
         "hidedInDevtools": []
     },
