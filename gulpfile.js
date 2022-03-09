@@ -16,140 +16,140 @@ const minifycss = require('gulp-minify-css');
 const runSequence = require('run-sequence');
 const jsonlint = require("gulp-jsonlint");
 
-// var colors = gutil.colors;
-// const handleError = function (err) {
-// 	console.log('\n')
-// 	gutil.log(colors.red('Error!'))
-// 	gutil.log('fileName: ' + colors.red(err.fileName))
-// 	gutil.log('lineNumber: ' + colors.red(err.lineNumber))
-// 	gutil.log('message: ' + err.message)
-// 	gutil.log('plugin: ' + colors.yellow(err.plugin))
-// };
+var colors = gutil.colors;
+const handleError = function (err) {
+	console.log('\n')
+	gutil.log(colors.red('Error!'))
+	gutil.log('fileName: ' + colors.red(err.fileName))
+	gutil.log('lineNumber: ' + colors.red(err.lineNumber))
+	gutil.log('message: ' + err.message)
+	gutil.log('plugin: ' + colors.yellow(err.plugin))
+};
 
-// gulp.task('watch', () => {
-// 	gulp.watch('./weixin/**/*.json', ['json']);
-// 	gulp.watch('./src/assets/**', ['assets']);
-// 	gulp.watch('./weixin/**/*.wxml', ['templates']);
-// 	gulp.watch('./weixin/**/*.wxss', ['wxss']);
-// 	gulp.watch('./weixin/**/*.sass', ['wxss']);
-// 	gulp.watch('./weixin/**/*.js', ['scripts']);
-// });
+gulp.task('watch', () => {
+	gulp.watch('./weixin/**/*.json', ['json']);
+	gulp.watch('./src/assets/**', ['assets']);
+	gulp.watch('./weixin/**/*.wxml', ['templates']);
+	gulp.watch('./weixin/**/*.wxss', ['wxss']);
+	gulp.watch('./weixin/**/*.sass', ['wxss']);
+	gulp.watch('./weixin/**/*.js', ['scripts']);
+});
 
-// const clean = function () {
-// 	console.log("不生效？？？");
-// 	return del(['./dist/**']);
+const clean = function () {
+	return del(['./dist/**']);
+}
+const jsonLint = function () {
+	var combined = combiner.obj([
+		gulp.src(['./weixin/**/*.json']),
+		jsonlint(),
+		jsonlint.reporter(),
+		jsonlint.failAfterError()
+	]);
 
-// }
-// const jsonLint = function () {
-// 	var combined = combiner.obj([
-// 		gulp.src(['./weixin/**/*.json']),
-// 		jsonlint(),
-// 		jsonlint.reporter(),
-// 		jsonlint.failAfterError()
-// 	]);
+	combined.on('error', handleError);
+	return combined;
+}
 
-// 	combined.on('error', handleError);
-// 	return combined;
-// }
+const json = gulp.series(jsonLint, function () {
+	return gulp.src('./weixin/**/*.json')
+		.pipe(gulp.dest('./dist'));
+});
 
-// const json = gulp.series(jsonLint, function () {
+
+// gulp.task('jsonPro', ['jsonLint'], () => {
 // 	return gulp.src('./weixin/**/*.json')
-// 		.pipe(gulp.dest('./dist'));
+// 		.pipe(jsonminify())
+// 		.pipe(gulp.dest('./dist'))
 // });
 
+const assets = function () {
+	return gulp.src('./weixin/assets/**')
+		.pipe(gulp.dest('./dist/assets'))
+};
+const appWxss = function () {
+	return gulp.src('./weixin/app.*')
+		.pipe(gulp.dest('./dist'))
+};
+const templates = function () {
+	return gulp.src('./weixin/**/*.wxml')
+		.pipe(gulp.dest('./dist'));
+}
 
-// // gulp.task('jsonPro', ['jsonLint'], () => {
-// // 	return gulp.src('./weixin/**/*.json')
-// // 		.pipe(jsonminify())
-// // 		.pipe(gulp.dest('./dist'))
-// // });
-
-// const assets = function () {
-// 	return gulp.src('./weixin/assets/**')
-// 		.pipe(gulp.dest('./dist/assets'))
-// };
-
-// const templates = function () {
+// gulp.task('templatesPro', () => {
 // 	return gulp.src('./weixin/**/*.wxml')
-// 		.pipe(gulp.dest('./dist'));
-// }
-
-// // gulp.task('templatesPro', () => {
-// // 	return gulp.src('./weixin/**/*.wxml')
-// // 		.pipe(htmlmin({
-// // 			collapseWhitespace: true,
-// // 			removeComments: true,
-// // 			keepClosingSlash: true
-// // 		}))
-// // 		.pipe(gulp.dest('./dist'))
-// // });
-// const wxss = function () {
-// 	// var combined = combiner.obj([
-// 	// 	gulp.src(['./weixin/**/*.{wxss,sass}', '!./src/styles/**']),
-// 	// 	sass().on('error', sass.logError),
-// 	// 	rename((path) => path.extname = '.wxss'),
-// 	// 	gulp.dest('./dist')
-// 	// ]);
-
-// 	// combined.on('error', handleError);
-// 	// return combined;
-// 	return gulp.src(['./weixin/pages/**/*.scss', './weixin/app.wxss'])
-// 		.pipe(
-// 			replace(/@import(.+?);/g, ($1, $2) =>
-// 				/*! 这种注释不会被clean-css 处理 */
-// 				$2.includes('./_') ? $1 : `/*! ${$1} */`
-// 			)
-// 		)
-// 		 .pipe(sass.sync().on('error', sass.logError))
-// .pipe(replace(/(\/\*\*\s{0,})(@.+)(\s{0,}\*\*\/)/g, ($1, $2, $3) => $3.replace(/\.scss/g, '.wxss')))
-
-// 		.pipe(rename({
-// 			extname: '.wxss'
-// 		}))
-// 		.pipe(gulp.dest('./dist'));
-// }
-
-
-
-// const scripts = function () {
-// 	return gulp.src('./weixin/**/*.js')
-// 		.pipe(babel({
-// 			presets: ["@babel/env"]
+// 		.pipe(htmlmin({
+// 			collapseWhitespace: true,
+// 			removeComments: true,
+// 			keepClosingSlash: true
 // 		}))
 // 		.pipe(gulp.dest('./dist'))
-// }
-
-
-// exports.dev = gulp.series(
-// 	clean,
-// 	json,
-// 	assets,
-// 	templates,
-// 	wxss,
-// 	scripts,
-// 	// watch
-// );
-//-----------------------
-
-function buildStyles() {
-	return gulp.src('./weixin/pages/**/*.{scss,sass}')
+// });
+const wxss = function () {
+	return gulp.src(['./weixin/pages/**/*.scss'],)
 		.pipe(
 			replace(/@import(.+?);/g, ($1, $2) =>
 				/*! 这种注释不会被clean-css 处理 */
 				$2.includes('./_') ? $1 : `/*! ${$1} */`
 			)
 		)
-		.pipe(sass.sync().on('error', sass.logError))
+		.pipe(sass.sync({
+			outputStyle: 'expanded'
+		}).on('error', sass.logError))
 		.pipe(replace(/(\/\*\*\s{0,})(@.+)(\s{0,}\*\*\/)/g, ($1, $2, $3) => $3.replace(/\.scss/g, '.wxss')))
+
 		.pipe(rename({
 			extname: '.wxss'
 		}))
-		.pipe(gulp.dest('./dist'));
+		.pipe(gulp.dest('./dist/pages'));
+}
 
-};
-exports.buildStyles = buildStyles;
 
-gulp.task("buildStyles", buildStyles);
+
+const scripts = function () {
+	return gulp.src('./weixin/**/*.js')
+		.pipe(babel({
+			presets: ["@babel/env"]
+		}))
+		.pipe(gulp.dest('./dist'))
+}
+
+const compiler = gulp.series(
+	clean,
+	json,
+	assets,
+	appWxss,
+	templates,
+	wxss,
+	scripts,
+	// watch
+);
+
 exports.dev = function () {
-	gulp.watch('./weixin/pages/**/*.{scss, sass}', gulp.series["buildStyles"]);
-};
+	gulp.watch("./weixin/**/*.{scss,wxss,wxml,json,js}", () => {
+		compiler();
+	});
+}
+//-----------------------
+
+// function buildStyles() {
+// 	return gulp.src('./weixin/pages/**/*.{scss,sass}')
+// 		.pipe(
+// 			replace(/@import(.+?);/g, ($1, $2) =>
+// 				/*! 这种注释不会被clean-css 处理 */
+// 				$2.includes('./_') ? $1 : `/*! ${$1} */`
+// 			)
+// 		)
+// 		.pipe(sass.sync().on('error', sass.logError))
+// 		.pipe(replace(/(\/\*\*\s{0,})(@.+)(\s{0,}\*\*\/)/g, ($1, $2, $3) => $3.replace(/\.scss/g, '.wxss')))
+// 		.pipe(rename({
+// 			extname: '.wxss'
+// 		}))
+// 		.pipe(gulp.dest('./dist/page'));
+
+// };
+// exports.buildStyles = buildStyles;
+
+// gulp.task("buildStyles", buildStyles);
+// exports.dev = function () {
+// 	gulp.watch('./weixin/pages/**/*.{scss, sass}', gulp.series["buildStyles"]);
+// };

@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "gulp  buildStyles",
-    "dev": "gulp  dev"
+    "dev": "gulp  dev",
+    "create": "node ./config/create-template.js template ",
+    "create:test": "  node ./config/create-template.js template "
   },
   "repository": {
     "type": "git",
@@ -24,7 +26,11 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/register": "^7.17.0",
     "babel-preset-es2015": "^6.24.1",
+    "chalk": "^5.0.0",
+    "commander": "^9.0.0",
+    "cross-env": "^7.0.3",
     "del": "^6.0.0",
+    "fs-extra": "^10.0.1",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-clean": "^0.4.0",
@@ -39,8 +45,11 @@
     "gulp-tap": "^2.0.0",
     "gulp-uglify": "^3.0.2",
     "gulp-util": "^3.0.8",
+    "inquirer": "^8.2.0",
+    "ora": "^6.1.0",
     "run-sequence": "^2.2.1",
     "sass": "^1.49.9",
+    "shelljs": "^0.8.5",
     "stream-combiner2": "^1.1.1"
   }
 }
