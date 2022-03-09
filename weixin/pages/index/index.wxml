@@ -5,9 +5,8 @@
 		<view class="__top-wrapper">
 			<view class="__side-wrapper">
 				<view  class="__side-border" />
-				<text  class="__side-title">当月女神榜</text>
+				<text  class="__side-title g-c-red">当月女神风云榜</text>
 			</view>
-			
 		</view>
 	</view>
 </view>

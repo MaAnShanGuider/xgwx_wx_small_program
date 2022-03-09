@@ -1,6 +1,6 @@
 const wxssTemplate = `
-	.$1 {
+.$1 {
 
-	}
+}
 `;
 module.exports = wxssTemplate;

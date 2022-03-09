@@ -3,7 +3,9 @@
 // index.js
 var app = getApp();
 Page({
-  data: {},
+  data: {
+    name: "测试"
+  },
   onShow: function onShow() {},
   onHide: function onHide() {}
 });

@@ -3,18 +3,17 @@ const sass = require('gulp-sass')(require('sass'));
 const rename = require("gulp-rename");
 const replace = require('gulp-replace');
 const tap = require('gulp-tap');
+const { templateFile, outputPath } = require("./config/config");
 
 const del = require('del');
 const path = require('path');
-const htmlmin = require('gulp-htmlmin');
-const jsonminify = require('gulp-jsonminify2');
 const gutil = require('gulp-util');
 const combiner = require('stream-combiner2');;
 const babel = require('gulp-babel');
 const uglify = require('gulp-uglify');
 const minifycss = require('gulp-minify-css');
-const runSequence = require('run-sequence');
 const jsonlint = require("gulp-jsonlint");
+const fs = require("fs-extra");
 
 var colors = gutil.colors;
 const handleError = function (err) {
@@ -25,16 +24,17 @@ const handleError = function (err) {
 	gutil.log('message: ' + err.message)
 	gutil.log('plugin: ' + colors.yellow(err.plugin))
 };
+const getSubpackagesSrc = function () {
+	const appJsonPath = "./" + outputPath + "/app.json";
 
-gulp.task('watch', () => {
-	gulp.watch('./weixin/**/*.json', ['json']);
-	gulp.watch('./src/assets/**', ['assets']);
-	gulp.watch('./weixin/**/*.wxml', ['templates']);
-	gulp.watch('./weixin/**/*.wxss', ['wxss']);
-	gulp.watch('./weixin/**/*.sass', ['wxss']);
-	gulp.watch('./weixin/**/*.js', ['scripts']);
-});
+	const data = fs.readFileSync(appJsonPath, "utf-8");
+	const json = JSON.parse(data.toString());
+	const subpackages = json.subpackages ? json.subpackages : [];
 
+	return subpackages.map(ele => {
+		return `./weixin/${ele.root}/**/*.scss`;
+	})
+};
 const clean = function () {
 	return del(['./dist/**']);
 }
@@ -55,13 +55,6 @@ const json = gulp.series(jsonLint, function () {
 		.pipe(gulp.dest('./dist'));
 });
 
-
-// gulp.task('jsonPro', ['jsonLint'], () => {
-// 	return gulp.src('./weixin/**/*.json')
-// 		.pipe(jsonminify())
-// 		.pipe(gulp.dest('./dist'))
-// });
-
 const assets = function () {
 	return gulp.src('./weixin/assets/**')
 		.pipe(gulp.dest('./dist/assets'))
@@ -75,17 +68,10 @@ const templates = function () {
 		.pipe(gulp.dest('./dist'));
 }
 
-// gulp.task('templatesPro', () => {
-// 	return gulp.src('./weixin/**/*.wxml')
-// 		.pipe(htmlmin({
-// 			collapseWhitespace: true,
-// 			removeComments: true,
-// 			keepClosingSlash: true
-// 		}))
-// 		.pipe(gulp.dest('./dist'))
-// });
+
 const wxss = function () {
-	return gulp.src(['./weixin/pages/**/*.scss'],)
+	const subpackagesSrc = getSubpackagesSrc();
+	return gulp.src(['./weixin/pages/**/*.scss', ...subpackagesSrc])
 		.pipe(
 			replace(/@import(.+?);/g, ($1, $2) =>
 				/*! 这种注释不会被clean-css 处理 */
@@ -102,8 +88,6 @@ const wxss = function () {
 		}))
 		.pipe(gulp.dest('./dist/pages'));
 }
-
-
 
 const scripts = function () {
 	return gulp.src('./weixin/**/*.js')
@@ -125,9 +109,10 @@ const compiler = gulp.series(
 );
 
 exports.dev = function () {
-	gulp.watch("./weixin/**/*.{scss,wxss,wxml,json,js}", () => {
-		compiler();
-	});
+	// gulp.watch("./weixin/**/*.{scss,wxss,wxml,json,js}", () => {
+	// 	compiler();
+	// });
+	gulp.watch("./weixin/**/*.{scss,wxss,wxml,json,js}", compiler);
 }
 //-----------------------
 
